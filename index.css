@@ -68,13 +68,38 @@ body::before {
   margin-bottom: 0.25rem;
 }
 
+/* CLEANER FILE INPUT */
+input[type="file"] {
+  border: none;
+  font-size: 1rem;
+  background-color: transparent;
+  padding: 0;
+  outline: none;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111827;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+  background: #e5e7eb;
+}
+
 .search-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-input[type="text"], input[type="file"] {
+input[type="text"] {
   padding: 0.6rem 1rem;
   border-radius: 14px;
   border: 1px solid #d1d5db;

@@ -53,7 +53,7 @@ function App() {
   const attendanceRate = totalGuests ? ((checkedInCount / totalGuests) * 100).toFixed(1) : 0;
 
   const filteredGuests = guestList.filter((guest) =>
-    \`\${guest.firstName} \${guest.lastName}\`.toLowerCase().includes(searchTerm.toLowerCase())
+    `\${guest.firstName} \${guest.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const sortedGuests = filteredGuests.sort((a, b) =>
@@ -80,7 +80,7 @@ function App() {
           <div className="progress-container">
             <div
               className="progress-bar"
-              style={{ width: \`\${attendanceRate}%\` }}
+              style={{ width: `\${attendanceRate}%` }}
             ></div>
           </div>
         </div>

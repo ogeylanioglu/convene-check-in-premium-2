@@ -264,3 +264,61 @@ button:focus-visible, input:focus-visible, label:focus-visible {
   background: #2563eb;
   transition: width 0.3s ease-in-out;
 }
+
+
+.manual-add {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.plus-button {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s;
+}
+.plus-button:hover {
+  background: #555;
+}
+
+.manual-form {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: fadeInSlide 0.4s ease forwards;
+}
+
+.manual-form input {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.manual-form button {
+  padding: 0.5rem 1rem;
+  background: #000;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.manual-form button:hover {
+  background: #333;
+}
+
+@keyframes fadeInSlide {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

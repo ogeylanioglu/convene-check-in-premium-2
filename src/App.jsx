@@ -71,7 +71,7 @@ function App() {
     <div className="wrapper">
       <header className="hero">
         <img src={logo} alt="Convene Logo" className="logo" />
-        <h1>Event Check-In</h1>
+        <h1>Elevate Your Check-In Process</h1>
         <p className="subtitle">A seamless, modern experience built for every Convene location.</p>
       </header>
 
@@ -103,7 +103,15 @@ function App() {
       </div>
 
       <div className="stats">
-        <div className="stat-box">Attendance Rate: {percentage}%</div>
+        <div className="stat-box">
+  Attendance Rate: {percentage}%
+  <div className="progress-container">
+    <div
+      className="progress-bar"
+      style={{ width: `${percentage}%` }}
+    ></div>
+  </div>
+</div>
         <div className="stat-box">Checked in: {checked} / {total}</div>
       </div>
 

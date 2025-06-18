@@ -35,7 +35,7 @@ function App() {
     const newEntry = {
       firstName: newGuest.firstName,
       lastName: newGuest.lastName,
-      email: \`\${newGuest.firstName.toLowerCase()}.\${newGuest.lastName.toLowerCase()}@manual.com\`,
+      email: `${newGuest.firstName.toLowerCase()}.${newGuest.lastName.toLowerCase()}@manual.com`,
     };
     setGuestList((prev) => [...prev, newEntry]);
     setCheckedIn((prev) => ({

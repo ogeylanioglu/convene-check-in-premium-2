@@ -1,131 +1,133 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
-import "./index.css";
-import background from "../public/background.jpg";
-import logo from "../public/C_logo.png";
+import logo from "./assets/C_logo.png";
 
 function App() {
   const [guestList, setGuestList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [checkedIn, setCheckedIn] = useState([]);
-  const [manualFirst, setManualFirst] = useState("");
-  const [manualLast, setManualLast] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [animate, setAnimate] = useState(false);
+  const [checkedIn, setCheckedIn] = useState({});
+  const [sortAsc, setSortAsc] = useState(true);
 
-  const handleFileUpload = (e) => {
+  useEffect(() => {
+    const savedList = localStorage.getItem("guestList");
+    const savedCheckIns = localStorage.getItem("checkedIn");
+    if (savedList) setGuestList(JSON.parse(savedList));
+    if (savedCheckIns) setCheckedIn(JSON.parse(savedCheckIns));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("guestList", JSON.stringify(guestList));
+  }, [guestList]);
+
+  useEffect(() => {
+    localStorage.setItem("checkedIn", JSON.stringify(checkedIn));
+  }, [checkedIn]);
+
+  const handleCSVUpload = (e) => {
     const file = e.target.files[0];
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
-      complete: function (results) {
-        const guests = results.data.map((row, index) => ({
-          id: index,
-          firstName: row["First Name"] || row["firstName"] || "",
-          lastName: row["Last Name"] || row["lastName"] || "",
-          email: row["Email"] || row["email"] || ""
-        }));
-        setGuestList(guests);
-      }
+      complete: (results) => {
+        const cleaned = results.data.map(row => ({
+          Name: row.Name?.trim()
+        })).filter(row => row.Name);
+        setGuestList(cleaned);
+        setCheckedIn({});
+        localStorage.setItem("guestList", JSON.stringify(cleaned));
+        localStorage.setItem("checkedIn", JSON.stringify({}));
+      },
     });
   };
 
-  const handleCheckIn = (id) => {
-    setCheckedIn((prev) => (prev.includes(id) ? prev : [...prev, id]));
+  const toggleCheckIn = (name) => {
+    const updated = { ...checkedIn, [name]: !checkedIn[name] };
+    setCheckedIn(updated);
+    localStorage.setItem("checkedIn", JSON.stringify(updated));
   };
 
-  const handleManualAdd = () => {
-    if (!manualFirst || !manualLast) return;
-    const newEntry = {
-      id: guestList.length + 1,
-      firstName: manualFirst,
-      lastName: manualLast,
-      email: `${manualFirst.toLowerCase()}.${manualLast.toLowerCase()}@manual.com`
-    };
-    setGuestList((prev) => [...prev, newEntry]);
-    setManualFirst("");
-    setManualLast("");
-    setShowForm(false);
+  const clearData = () => {
+    setGuestList([]);
+    setCheckedIn({});
+    localStorage.clear();
   };
 
-  const filteredGuests = guestList.filter((guest) =>
-    `${guest.firstName} ${guest.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredGuests = guestList
+    .filter((guest) =>
+      guest.Name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) =>
+      sortAsc
+        ? a.Name.localeCompare(b.Name)
+        : b.Name.localeCompare(a.Name)
+    );
 
-  const attendanceRate = guestList.length
-    ? Math.round((checkedIn.length / guestList.length) * 100)
-    : 0;
+  const total = guestList.length;
+  const checked = Object.values(checkedIn).filter(Boolean).length;
+  const percentage = total > 0 ? ((checked / total) * 100).toFixed(1) : 0;
 
   return (
-    <div className="app">
-      <div className="overlay" />
-      <header>
-        <img src={logo} alt="Logo" className="logo" />
-        <h1>Elevate your Check-in Process</h1>
+    <div className="wrapper">
+      <header className="hero">
+        <img src={logo} alt="Convene Logo" className="logo" />
+        <h1>Elevate Your Check-In Process</h1>
+        <p className="subtitle">A seamless, modern experience built for every Convene location.</p>
       </header>
 
       <div className="controls">
-        <input type="file" accept=".csv" onChange={handleFileUpload} />
-        <input
-          type="text"
-          placeholder="Search guest..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <div className="attendance">
-          Attendance: {checkedIn.length}/{guestList.length} ({attendanceRate}%)
-          <div className="progress-bar">
-            <div
-              className="progress"
-              style={{ width: `${attendanceRate}%` }}
-            />
-          </div>
+        <div className="upload-wrapper">
+          <label htmlFor="csvUpload" className="upload-label">Upload Guest List (.csv)</label>
+          <input
+            type="file"
+            id="csvUpload"
+            className="hidden-input"
+            accept=".csv"
+            onChange={handleCSVUpload}
+          />
+        </div>
+
+        <div className="search-row">
+          <input
+            type="text"
+            placeholder="Search by full name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button onClick={() => setSearchTerm("")}>Clear</button>
+          <button onClick={clearData}>Reset All</button>
+          <button onClick={() => setSortAsc((prev) => !prev)}>
+            Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
+          </button>
         </div>
       </div>
 
-      <div className="manual-add">
-        {!showForm && (
-          <button
-            className="plus-button"
-            onClick={() => {
-              setShowForm(true);
-              setAnimate(true);
-              setTimeout(() => setAnimate(false), 300);
-            }}
-          >
-            +
-          </button>
-        )}
-
-        {showForm && (
-          <div className={`manual-form ${animate ? "animate-in" : ""}`}>
-            <input
-              type="text"
-              placeholder="First Name"
-              value={manualFirst}
-              onChange={(e) => setManualFirst(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={manualLast}
-              onChange={(e) => setManualLast(e.target.value)}
-            />
-            <button onClick={handleManualAdd}>Add Guest</button>
-          </div>
-        )}
+      <div className="stats">
+        <div className="stat-box">
+  Attendance Rate: {percentage}%
+  <div className="progress-container">
+    <div
+      className="progress-bar"
+      style={{ width: `${percentage}%` }}
+    ></div>
+  </div>
+</div>
+        <div className="stat-box">Checked in: {checked} / {total}</div>
       </div>
 
-      <div className="guest-list">
-        {filteredGuests.map((guest) => (
+      <div className="guest-grid">
+        {filteredGuests.map((guest, idx) => (
           <div
-            key={guest.id}
-            className={`guest-card ${
-              checkedIn.includes(guest.id) ? "checked-in" : ""
-            }`}
-            onClick={() => handleCheckIn(guest.id)}
+            key={idx}
+            onClick={() => toggleCheckIn(guest.Name)}
+            className={`guest-card ${checkedIn[guest.Name] ? "checked" : ""}`}
           >
-            {guest.firstName} {guest.lastName}
+            <div className="guest-top">
+              <span className="guest-name">{guest.Name}</span>
+              <span className={`tag ${checkedIn[guest.Name] ? "green" : "red"}`}>
+                {checkedIn[guest.Name] ? "Checked In" : "Not Checked In"}
+              </span>
+            </div>
           </div>
         ))}
       </div>

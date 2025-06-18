@@ -71,15 +71,21 @@ function App() {
     <div className="wrapper">
       <header className="hero">
         <img src={logo} alt="Convene Logo" className="logo" />
-        <h1>Check-In Process</h1>
+        <h1>Elevate Your Check-In Process</h1>
         <p className="subtitle">A seamless, modern experience built for every Convene location.</p>
       </header>
 
       <div className="controls">
-        <label className="upload-box">
-          Upload Guest List (.csv)
-          <input type="file" accept=".csv" onChange={handleCSVUpload} />
-        </label>
+        <div className="upload-wrapper">
+          <label htmlFor="csvUpload" className="upload-label">Upload Guest List (.csv)</label>
+          <input
+            type="file"
+            id="csvUpload"
+            className="hidden-input"
+            accept=".csv"
+            onChange={handleCSVUpload}
+          />
+        </div>
 
         <div className="search-row">
           <input

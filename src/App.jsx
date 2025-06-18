@@ -7,6 +7,10 @@ function App() {
   const [guestList, setGuestList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [checkedIn, setCheckedIn] = useState({});
+  const [manualFirst, setManualFirst] = useState("");
+  const [manualLast, setManualLast] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [animate, setAnimate] = useState(false);
   const [sortAsc, setSortAsc] = useState(true);
 
   useEffect(() => {

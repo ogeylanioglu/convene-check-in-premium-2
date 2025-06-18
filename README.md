@@ -10,11 +10,5 @@ This is a localStorage-powered event check-in app built with React + Vite.
 - Track attendance % visually
 - Stylish, mobile-friendly design
 
-## Deployment
-Deploy on [Vercel](https://vercel.com/) with:
-- Framework: Vite
-- Output directory: `dist`
-- Build command: `npm run build`
-
 ## Notes
 No backend — all data is stored in browser `localStorage`.

@@ -71,7 +71,7 @@ function App() {
     <div className="wrapper">
       <header className="hero">
         <img src={logo} alt="Convene Logo" className="logo" />
-        <h1>Elevate Your Check-In Process</h1>
+        <h1>Convene Event Check-In</h1>
         <p className="subtitle">A seamless, modern experience built for every Convene location.</p>
       </header>
 

@@ -145,7 +145,7 @@ button:hover {
 
 .guest-card.checked {
   animation: pop 0.25s ease;
-  background-color: #fff0f5;
+  background-color: #6ee7b7;
   border-color: #c026d3;
 }
 

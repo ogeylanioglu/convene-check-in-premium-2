@@ -1,4 +1,112 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Merriweather:wght@700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: url('./assets/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #1a1a1a;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+.app {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.logo {
+  width: 72px;
+  margin-bottom: 1rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 2.2rem;
+  margin: 0.5rem 0;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.controls input[type="file"],
+.controls input[type="text"] {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.stat-box {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.progress-container {
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 12px;
+  margin-top: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #2563eb;
+  transition: width 0.3s ease-in-out;
+}
+
+.guest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.guest-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.guest-card:hover {
+  background: #f9fafb;
+}
+
+.guest-card.checked-in {
+  background-color: #dcfce7;
+  border-color: #22c55e;
+}
+
 @keyframes fadeSlideIn {
   0% {
     opacity: 0;
@@ -15,18 +123,38 @@
   background-color: #ecfdf5;
 }
 
-@keyframes fadeSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.manual-guest-form {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  width: 260px;
 }
 
-.guest-card.newly-added {
-  animation: fadeSlideIn 0.5s ease-out;
-  background-color: #ecfdf5;
+.manual-guest-form input {
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.add-guest-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 1000;
 }

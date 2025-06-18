@@ -21,7 +21,7 @@ body::before {
   z-index: -1;
 }
 
-.app {
+.wrapper {
   max-width: 960px;
   margin: 2rem auto;
   padding: 2rem;
@@ -35,34 +35,218 @@ body::before {
   margin-bottom: 1rem;
 }
 
-header {
+.hero {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-header h1 {
+.hero h1 {
   font-family: 'Merriweather', serif;
   font-size: 2.2rem;
   margin: 0.5rem 0;
 }
 
-.controls {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 1rem;
+.subtitle {
+  color: #4b5563;
+  font-size: 0.95rem;
 }
 
-.controls input[type="file"],
-.controls input[type="text"] {
+.controls {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.upload-box {
+  font-weight: 600;
   font-size: 1rem;
-  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* CLEANER FILE INPUT */
+input[type="file"] {
+  border: none;
+  font-size: 1rem;
+  background-color: transparent;
+  padding: 0;
+  outline: none;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111827;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+  background: #e5e7eb;
+}
+
+.search-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+input[type="text"] {
+  padding: 0.6rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  flex: 1;
+}
+
+button {
+  padding: 0.5rem 1.1rem;
+  border: none;
+  border-radius: 14px;
+  background-color: #f1f5f9;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #e2e8f0;
+}
+
+.guest-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.guest-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.guest-card:hover {
+  transform: scale(1.01);
+  background-color: #f9fafb;
+}
+
+.guest-card.checked {
+  animation: pop 0.25s ease;
+  background-color: #fff0f5;
+  border-color: #c026d3;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.guest-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.guest-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.tag {
+  padding: 0.3rem 0.7rem;
+  border-radius: 14px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.green {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.red {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .stat-box {
+  background: #f8fafc;
+  padding: 0.75rem 1.2rem;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   font-weight: 600;
-  font-size: 1rem;
+}
+
+.upload-label {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.upload-label:hover {
+  background: #e5e7eb;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.control-panel {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .control-panel {
+    flex-direction: column;
+  }
+
+  .guest-card {
+    padding: 0.8rem 1rem;
+  }
+}
+
+button:focus-visible, input:focus-visible, label:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
 }
 
 .progress-container {
@@ -79,82 +263,4 @@ header h1 {
   height: 100%;
   background: #2563eb;
   transition: width 0.3s ease-in-out;
-}
-
-.guest-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.guest-card {
-  background: white;
-  padding: 1rem;
-  border-radius: 14px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.guest-card:hover {
-  background: #f9fafb;
-}
-
-.guest-card.checked-in {
-  background-color: #dcfce7;
-  border-color: #22c55e;
-}
-
-@keyframes fadeSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.guest-card.newly-added {
-  animation: fadeSlideIn 0.5s ease-out;
-  background-color: #ecfdf5;
-}
-
-.manual-guest-form {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  background: white;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  z-index: 1000;
-  width: 260px;
-}
-
-.manual-guest-form input {
-  margin-bottom: 0.5rem;
-  padding: 0.4rem 0.6rem;
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-}
-
-.add-guest-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  font-size: 2rem;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  z-index: 1000;
 }

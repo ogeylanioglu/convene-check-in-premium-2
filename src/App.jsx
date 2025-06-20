@@ -7,18 +7,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [checkedIn, setCheckedIn] = useState({});
   const [sortAsc, setSortAsc] = useState(true);
-  const addManualGuest = () => {
-    const fullName = prompt("Enter guest's full name:");
-    if (!fullName || !fullName.trim()) return;
-
-    const name = fullName.trim();
-    const email = name.toLowerCase().replace(/ /g, ".") + "@manual.com";
-
-    const newGuest = { Name: name, Email: email, manual: true };
-    const updatedList = [...guestList, newGuest];
-    setGuestList(updatedList);
-    localStorage.setItem("guestList", JSON.stringify(updatedList));
-  };
 
   useEffect(() => {
     const savedList = localStorage.getItem("guestList");
@@ -62,6 +50,19 @@ function App() {
     setGuestList([]);
     setCheckedIn({});
     localStorage.clear();
+  };
+
+  const addManualGuest = () => {
+    const fullName = prompt("Enter guest's full name:");
+    if (!fullName || !fullName.trim()) return;
+
+    const name = fullName.trim();
+    const email = name.toLowerCase().replace(/ /g, ".") + "@manual.com";
+
+    const newGuest = { Name: name, Email: email, manual: true };
+    const updatedList = [...guestList, newGuest];
+    setGuestList(updatedList);
+    localStorage.setItem("guestList", JSON.stringify(updatedList));
   };
 
   const filteredGuests = guestList
@@ -115,16 +116,19 @@ function App() {
 
       <div className="stats">
         <div className="stat-box">
-  Attendance Rate: {percentage}%
-  <div className="progress-container">
-    <div
-      className="progress-bar"
-      style={{ width: `${percentage}%` }}
-    ></div>
-  </div>
-</div>
+          Attendance Rate: {percentage}%
+          <div className="progress-container">
+            <div
+              className="progress-bar"
+              style={{ width: `${percentage}%` }}
+            ></div>
+          </div>
+        </div>
         <div className="stat-box">Checked in: {checked} / {total}</div>
       </div>
+
+      {/* Floating + Button */}
+      <button className="fab" onClick={addManualGuest}>+</button>
 
       <div className="guest-grid">
         {filteredGuests.map((guest, idx) => (

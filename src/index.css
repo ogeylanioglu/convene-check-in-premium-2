@@ -287,6 +287,6 @@ button:focus-visible, input:focus-visible, label:focus-visible {
 }
 
 .manual {
-  border: 2px dashed ##FF0000;
+  border: 2px dashed #FF0000;
   box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
 }

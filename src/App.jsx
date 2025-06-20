@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import logo from "./assets/C_logo.png";
@@ -8,6 +7,18 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [checkedIn, setCheckedIn] = useState({});
   const [sortAsc, setSortAsc] = useState(true);
+  const addManualGuest = () => {
+    const fullName = prompt("Enter guest's full name:");
+    if (!fullName || !fullName.trim()) return;
+
+    const name = fullName.trim();
+    const email = name.toLowerCase().replace(/ /g, ".") + "@manual.com";
+
+    const newGuest = { Name: name, Email: email, manual: true };
+    const updatedList = [...guestList, newGuest];
+    setGuestList(updatedList);
+    localStorage.setItem("guestList", JSON.stringify(updatedList));
+  };
 
   useEffect(() => {
     const savedList = localStorage.getItem("guestList");
@@ -71,7 +82,7 @@ function App() {
     <div className="wrapper">
       <header className="hero">
         <img src={logo} alt="Convene Logo" className="logo" />
-        <h1>Convene Check-In</h1>
+        <h1>Elevate Your Check-In Process</h1>
         <p className="subtitle">A seamless, modern experience built for every Convene location.</p>
       </header>
 
@@ -120,7 +131,7 @@ function App() {
           <div
             key={idx}
             onClick={() => toggleCheckIn(guest.Name)}
-            className={`guest-card ${checkedIn[guest.Name] ? "checked" : ""}`}
+            className={`guest-card ${checkedIn[guest.Name] ? "checked" : ""} ${guest.manual ? "manual" : ""}`}
           >
             <div className="guest-top">
               <span className="guest-name">{guest.Name}</span>

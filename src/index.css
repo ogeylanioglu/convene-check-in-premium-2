@@ -144,8 +144,8 @@ button:hover {
 
 .guest-card.checked {
   animation: pop 0.25s ease;
-  background-color: #74A662;
-  border-color: #98FF98;
+  background-color: #98FF98;
+  border-color: #74a662;
 }
 
 @keyframes pop {

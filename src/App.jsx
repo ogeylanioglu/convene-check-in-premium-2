@@ -71,8 +71,6 @@ function App() {
       const isManual = showManualOnly ? guest.manual : true;
       return matchesSearch && isManual;
     })
-      guest.Name?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
     .sort((a, b) =>
       sortAsc
         ? a.Name.localeCompare(b.Name)

@@ -66,16 +66,18 @@ function App() {
   };
 
   const filteredGuests = guestList
-  .filter((guest) => {
-    const matchesSearch = guest.Name?.toLowerCase().includes(searchTerm.toLowerCase());
-    const isManual = showManualOnly ? guest.manual : true;
-    return matchesSearch && isManual;
-  })
-  .sort((a, b) =>
-    sortAsc
-      ? a.Name.localeCompare(b.Name)
-      : b.Name.localeCompare(a.Name)
-  );
+    .filter((guest) => {
+      const matchesSearch = guest.Name?.toLowerCase().includes(searchTerm.toLowerCase());
+      const isManual = showManualOnly ? guest.manual : true;
+      return matchesSearch && isManual;
+    })
+      guest.Name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) =>
+      sortAsc
+        ? a.Name.localeCompare(b.Name)
+        : b.Name.localeCompare(a.Name)
+    );
 
   const total = guestList.length;
   const checked = Object.values(checkedIn).filter(Boolean).length;
@@ -142,8 +144,9 @@ function App() {
           {showManualOnly ? "Show All" : "Show Manual Only"}
         </button>
         <button onClick={handleExport}>Export CSV</button>
-            Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
-          </button>
+<button onClick={() => setSortAsc(!sortAsc)}>
+  Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
+</button>
         </div>
       </div>
 

@@ -144,8 +144,8 @@ button:hover {
 
 .guest-card.checked {
   animation: pop 0.25s ease;
-  background-color: #98FF98;
-  border-color: #74A662;
+  background-color: #fff0f5;
+  border-color: #c026d3;
 }
 
 @keyframes pop {
@@ -287,6 +287,6 @@ button:focus-visible, input:focus-visible, label:focus-visible {
 }
 
 .manual {
-  border: 2px dashed #FF0000;
+  border: 2px dashed #6366f1;
   box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
 }

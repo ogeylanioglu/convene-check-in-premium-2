@@ -290,3 +290,11 @@ button:focus-visible, input:focus-visible, label:focus-visible {
   border: 2px dashed #6366f1;
   box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
 }
+
+body {
+  background-image: url('./assets/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

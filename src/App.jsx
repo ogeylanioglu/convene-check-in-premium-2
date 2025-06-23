@@ -101,7 +101,7 @@ function App() {
     <div className="wrapper">
       <header className="hero">
         <img src={logo} alt="Convene Logo" className="logo" />
-        <h1>Elevate Your Check-In Process</h1>
+        <h1>Convene Check-In</h1>
         <p className="subtitle">A seamless, modern experience built for every Convene location.</p>
       </header>
 
@@ -130,7 +130,7 @@ function App() {
             Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
           </button>
           <button onClick={() => setShowManualOnly(prev => !prev)}>
-            {showManualOnly ? "Show All" : "Show Manual Only"}
+            {showManualOnly ? "Show Everyone" : "People Who Were Not on the List"}
           </button>
           <button onClick={exportCSV}>Export CSV</button>
         </div>

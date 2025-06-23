@@ -7,6 +7,19 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [checkedIn, setCheckedIn] = useState({});
   const [sortAsc, setSortAsc] = useState(true);
+  const [showManualOnly, setShowManualOnly] = useState(false);
+  const addManualGuest = () => {
+    const fullName = prompt("Enter guest's full name:");
+    if (!fullName || !fullName.trim()) return;
+
+    const name = fullName.trim();
+    const email = name.toLowerCase().replace(/ /g, ".") + "@manual.com";
+
+    const newGuest = { Name: name, Email: email, manual: true };
+    const updatedList = [...guestList, newGuest];
+    setGuestList(updatedList);
+    localStorage.setItem("guestList", JSON.stringify(updatedList));
+  };
 
   useEffect(() => {
     const savedList = localStorage.getItem("guestList");
@@ -52,21 +65,12 @@ function App() {
     localStorage.clear();
   };
 
-  const addManualGuest = () => {
-    const fullName = prompt("Enter guest's full name:");
-    if (!fullName || !fullName.trim()) return;
-
-    const name = fullName.trim();
-    const email = name.toLowerCase().replace(/ /g, ".") + "@manual.com";
-
-    const newGuest = { Name: name, Email: email, manual: true };
-    const updatedList = [...guestList, newGuest];
-    setGuestList(updatedList);
-    localStorage.setItem("guestList", JSON.stringify(updatedList));
-  };
-
   const filteredGuests = guestList
-    .filter((guest) =>
+    .filter((guest) => {
+      const matchesSearch = guest.Name?.toLowerCase().includes(searchTerm.toLowerCase());
+      const isManual = showManualOnly ? guest.manual : true;
+      return matchesSearch && isManual;
+    })
       guest.Name?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) =>
@@ -78,12 +82,37 @@ function App() {
   const total = guestList.length;
   const checked = Object.values(checkedIn).filter(Boolean).length;
   const percentage = total > 0 ? ((checked / total) * 100).toFixed(1) : 0;
+  const handleExport = () => {
+    const dataToExport = guestList.map(guest => ({
+      Name: guest.Name,
+      CheckedIn: checkedIn[guest.Name] ? "Yes" : "No",
+      Manual: guest.manual ? "Yes" : "No"
+    }));
+
+    const headers = ["Name", "CheckedIn", "Manual"];
+    const csvRows = [
+      headers.join(","),
+      ...dataToExport.map(row =>
+        [row.Name, row.CheckedIn, row.Manual].map(field => `"${field}"`).join(",")
+      )
+    ];
+
+    const csvContent = "data:text/csv;charset=utf-8," + csvRows.join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "guest_checkin_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   return (
     <div className="wrapper">
       <header className="hero">
         <img src={logo} alt="Convene Logo" className="logo" />
-        <h1>Convene Check-In Process</h1>
+        <h1>Elevate Your Check-In Process</h1>
         <p className="subtitle">A seamless, modern experience built for every Convene location.</p>
       </header>
 
@@ -109,6 +138,12 @@ function App() {
           <button onClick={() => setSearchTerm("")}>Clear</button>
           <button onClick={clearData}>Reset All</button>
           <button onClick={() => setSortAsc((prev) => !prev)}>
+          Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
+        </button>
+        <button onClick={() => setShowManualOnly(prev => !prev)}>
+          {showManualOnly ? "Show All" : "Show Manual Only"}
+        </button>
+        <button onClick={handleExport}>Export CSV</button>
             Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
           </button>
         </div>
@@ -116,19 +151,16 @@ function App() {
 
       <div className="stats">
         <div className="stat-box">
-          Attendance Rate: {percentage}%
-          <div className="progress-container">
-            <div
-              className="progress-bar"
-              style={{ width: `${percentage}%` }}
-            ></div>
-          </div>
-        </div>
+  Attendance Rate: {percentage}%
+  <div className="progress-container">
+    <div
+      className="progress-bar"
+      style={{ width: `${percentage}%` }}
+    ></div>
+  </div>
+</div>
         <div className="stat-box">Checked in: {checked} / {total}</div>
       </div>
-
-      {/* Floating + Button */}
-      <button className="fab" onClick={addManualGuest}>+</button>
 
       <div className="guest-grid">
         {filteredGuests.map((guest, idx) => (

@@ -7,6 +7,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [checkedIn, setCheckedIn] = useState({});
   const [sortAsc, setSortAsc] = useState(true);
+  const [showManualOnly, setShowManualOnly] = useState(false);
+
   const addManualGuest = () => {
     const fullName = prompt("Enter guest's full name:");
     if (!fullName || !fullName.trim()) return;
@@ -18,6 +20,23 @@ function App() {
     const updatedList = [...guestList, newGuest];
     setGuestList(updatedList);
     localStorage.setItem("guestList", JSON.stringify(updatedList));
+  };
+
+  const exportCSV = () => {
+    const dataToExport = guestList.map(guest => ({
+      Name: guest.Name,
+      CheckedIn: checkedIn[guest.Name] ? "Yes" : "No",
+      Manual: guest.manual ? "Yes" : "No",
+    }));
+    const csv = Papa.unparse(dataToExport);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "checkin_results.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   useEffect(() => {
@@ -65,13 +84,13 @@ function App() {
   };
 
   const filteredGuests = guestList
-    .filter((guest) =>
-      guest.Name?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    .filter((guest) => {
+      const matchesSearch = guest.Name?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesManual = !showManualOnly || guest.manual;
+      return matchesSearch && matchesManual;
+    })
     .sort((a, b) =>
-      sortAsc
-        ? a.Name.localeCompare(b.Name)
-        : b.Name.localeCompare(a.Name)
+      sortAsc ? a.Name.localeCompare(b.Name) : b.Name.localeCompare(a.Name)
     );
 
   const total = guestList.length;
@@ -110,19 +129,20 @@ function App() {
           <button onClick={() => setSortAsc((prev) => !prev)}>
             Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
           </button>
+          <button onClick={() => setShowManualOnly(prev => !prev)}>
+            {showManualOnly ? "Show All" : "Show Manual Only"}
+          </button>
+          <button onClick={exportCSV}>Export CSV</button>
         </div>
       </div>
 
       <div className="stats">
         <div className="stat-box">
-  Attendance Rate: {percentage}%
-  <div className="progress-container">
-    <div
-      className="progress-bar"
-      style={{ width: `${percentage}%` }}
-    ></div>
-  </div>
-</div>
+          Attendance Rate: {percentage}%
+          <div className="progress-container">
+            <div className="progress-bar" style={{ width: `${percentage}%` }}></div>
+          </div>
+        </div>
         <div className="stat-box">Checked in: {checked} / {total}</div>
       </div>
 
@@ -142,6 +162,8 @@ function App() {
           </div>
         ))}
       </div>
+
+      <div className="fab" onClick={addManualGuest}>+</div>
     </div>
   );
 }

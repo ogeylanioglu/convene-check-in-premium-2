@@ -130,7 +130,7 @@ function App() {
             Sort {sortAsc ? "↓ Z-A" : "↑ A-Z"}
           </button>
           <button onClick={() => setShowManualOnly(prev => !prev)}>
-            {showManualOnly ? "Show Everyone" : "On-Site Registrations"}
+            {showManualOnly ? "Show Everyone" : "People Who Were Not on the List"}
           </button>
           <button onClick={exportCSV}>Export CSV</button>
         </div>
